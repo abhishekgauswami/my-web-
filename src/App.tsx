@@ -252,13 +252,14 @@ function ProjectCard({ index, totalCards, project }: { index: number; totalCards
     offset: ["start end", "end start"],
   });
   const targetScale = 1 - (totalCards - 1 - index) * 0.03;
-  const scale = useTransform(scrollYProgress, [0, 0.65, 1], [1, 1, targetScale]);
+  const scale = useTransform(scrollYProgress, [0, 0.45, 1], [0.9, 1, targetScale]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0.5, 1, 1]);
 
   return (
     <div ref={ref} className="h-[85vh]">
       <motion.article
         className="sticky top-24 rounded-[40px] border-2 border-[#D7E2EA] bg-[#0C0C0C] p-4 sm:top-24 sm:rounded-[50px] sm:p-6 md:top-32 md:rounded-[60px] md:p-8"
-        style={{ scale, top: `${index * 28}px` }}
+        style={{ scale, opacity, top: `${index * 28}px` }}
       >
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4 sm:mb-8">
           <div className="flex items-end gap-4">
@@ -367,7 +368,12 @@ export default function App() {
             ["04", "Database Design", "Creating optimized database schemas, queries, and data flows that support product growth and smooth user experiences."],
             ["05", "Web App Optimization", "Improving speed, code quality, and production stability through profiling, refactoring, and deployment best practices."],
           ].map(([num, title, desc], i) => (
-            <FadeIn key={num} delay={i * 0.1} y={25} className="flex border-b border-[rgba(12,12,12,0.15)] py-8 sm:py-10 md:py-12">
+            <FadeIn
+              key={num}
+              delay={i * 0.12}
+              y={40}
+              className="flex border-b border-[rgba(12,12,12,0.15)] py-8 transition-transform duration-300 hover:scale-[1.01] sm:py-10 md:py-12"
+            >
               <div className="w-1/3">
                 <p className="text-[clamp(3rem,10vw,140px)] font-black leading-none">{num}</p>
               </div>
@@ -403,6 +409,15 @@ export default function App() {
           </a>
         </div>
       </section>
+      <footer className="border-t border-[#D7E2EA]/20 px-5 py-8 text-[#D7E2EA]/80 sm:px-8 md:px-10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-xs uppercase tracking-[0.2em] sm:flex-row sm:text-sm">
+          <p>Abhishek Gauswami</p>
+          <p>Full Stack Developer</p>
+          <a href="mailto:abhishekgauswami19@gmail.com" className="transition-opacity hover:opacity-70">
+            abhishekgauswami19@gmail.com
+          </a>
+        </div>
+      </footer>
     </main>
   );
 }
