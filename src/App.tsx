@@ -256,7 +256,7 @@ function ProjectCard({ index, totalCards, project }: { index: number; totalCards
   const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0.5, 1, 1]);
 
   return (
-    <div ref={ref} className="h-[85vh]">
+    <div ref={ref} className={`h-[85vh] ${index === 0 ? "" : "-mt-[52vh] sm:-mt-[54vh] md:-mt-[56vh]"}`}>
       <motion.article
         className="sticky top-24 rounded-[40px] border-2 border-[#D7E2EA] bg-[#0C0C0C] p-4 sm:top-24 sm:rounded-[50px] sm:p-6 md:top-32 md:rounded-[60px] md:p-8"
         style={{ scale, opacity, top: `${index * 28}px` }}
@@ -389,7 +389,7 @@ export default function App() {
       <section id="projects" className="-mt-10 z-10 rounded-t-[40px] bg-[#0C0C0C] px-5 pb-16 pt-20 sm:-mt-12 sm:rounded-t-[50px] sm:px-8 md:-mt-14 md:rounded-t-[60px] md:px-10">
         <h2 className="hero-heading mb-10 text-center text-[clamp(3rem,12vw,160px)] font-black uppercase leading-none tracking-tight sm:mb-14 md:mb-16">Project</h2>
         <p className="mb-12 text-center text-sm uppercase tracking-[0.3em] text-[#D7E2EA]/70 sm:text-base">Under Development</p>
-        <div className="space-y-10">
+        <div className="relative">
           {projects.map((project, index) => (
             <ProjectCard key={project.number} index={index} totalCards={projects.length} project={project} />
           ))}
