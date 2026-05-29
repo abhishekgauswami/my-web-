@@ -216,8 +216,8 @@ function MarqueeSection() {
   useEffect(() => {
     const onScroll = () => {
       if (!sectionRef.current) return;
-      const top = sectionRef.current.offsetTop;
-      const nextOffset = (window.scrollY - top + window.innerHeight) * 0.3;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const nextOffset = (window.innerHeight - rect.top) * 0.55;
       setOffset(nextOffset);
     };
     onScroll();
@@ -230,12 +230,12 @@ function MarqueeSection() {
   return (
     <section ref={sectionRef} className="bg-[#0C0C0C] px-5 pb-10 pt-24 sm:px-8 sm:pt-32 md:px-10 md:pt-40">
       <div className="flex flex-col gap-3 overflow-hidden">
-        <div className="flex gap-3" style={{ transform: `translateX(${offset - 200}px)`, willChange: "transform" }}>
+        <div className="flex gap-3" style={{ transform: `translateX(${offset - 320}px)`, willChange: "transform" }}>
           {renderRow(row1).map((src, i) => (
             <img key={`r1-${i}`} src={src} loading="lazy" className="h-[270px] w-[420px] shrink-0 rounded-2xl object-cover" />
           ))}
         </div>
-        <div className="flex gap-3" style={{ transform: `translateX(${-1 * (offset - 200)}px)`, willChange: "transform" }}>
+        <div className="flex gap-3" style={{ transform: `translateX(${-1 * (offset - 320)}px)`, willChange: "transform" }}>
           {renderRow(row2).map((src, i) => (
             <img key={`r2-${i}`} src={src} loading="lazy" className="h-[270px] w-[420px] shrink-0 rounded-2xl object-cover" />
           ))}
@@ -252,7 +252,7 @@ function ProjectCard({ index, totalCards, project }: { index: number; totalCards
     offset: ["start end", "end start"],
   });
   const targetScale = 1 - (totalCards - 1 - index) * 0.03;
-  const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
+  const scale = useTransform(scrollYProgress, [0, 0.65, 1], [1, 1, targetScale]);
 
   return (
     <div ref={ref} className="h-[85vh]">
@@ -289,9 +289,14 @@ export default function App() {
     <main className="overflow-x-clip bg-[#0C0C0C] text-[#D7E2EA]">
       <section className="relative flex h-screen flex-col overflow-x-clip px-5 sm:px-8 md:px-10">
         <FadeIn as="nav" delay={0} y={-20} className="z-20 flex items-center justify-between px-1 pt-6 text-sm font-medium uppercase tracking-wider text-[#D7E2EA] transition-all md:pt-8 md:text-lg lg:text-[1.4rem]">
-          {["About", "Price", "Projects", "Contact"].map((item) => (
-            <a key={item} href="#" className="transition-opacity duration-200 hover:opacity-70">
-              {item}
+          {[
+            { label: "About", href: "#about" },
+            { label: "Price", href: "#services" },
+            { label: "Projects", href: "#projects" },
+            { label: "Contact", href: "#contact" },
+          ].map((item) => (
+            <a key={item.label} href={item.href} className="transition-opacity duration-200 hover:opacity-70">
+              {item.label}
             </a>
           ))}
         </FadeIn>
@@ -326,7 +331,7 @@ export default function App() {
 
       <MarqueeSection />
 
-      <section className="relative flex min-h-screen flex-col items-center justify-center gap-10 px-5 py-20 text-center sm:gap-14 sm:px-8 md:gap-16 md:px-10">
+      <section id="about" className="relative flex min-h-screen flex-col items-center justify-center gap-10 px-5 py-20 text-center sm:gap-14 sm:px-8 md:gap-16 md:px-10">
         <FadeIn delay={0.1} x={-80} y={0} duration={0.9} className="absolute left-[1%] top-[4%] w-[120px] sm:left-[2%] sm:w-[160px] md:left-[4%] md:w-[210px]">
           <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png" />
         </FadeIn>
@@ -352,7 +357,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="rounded-t-[40px] bg-white px-5 py-20 text-[#0C0C0C] sm:rounded-t-[50px] sm:px-8 sm:py-24 md:rounded-t-[60px] md:px-10 md:py-32">
+      <section id="services" className="rounded-t-[40px] bg-white px-5 py-20 text-[#0C0C0C] sm:rounded-t-[50px] sm:px-8 sm:py-24 md:rounded-t-[60px] md:px-10 md:py-32">
         <h2 className="mb-16 text-center text-[clamp(3rem,12vw,160px)] font-black uppercase leading-none tracking-tight sm:mb-20 md:mb-28">Services</h2>
         <div className="mx-auto max-w-5xl">
           {[
@@ -375,7 +380,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="-mt-10 z-10 rounded-t-[40px] bg-[#0C0C0C] px-5 pb-16 pt-20 sm:-mt-12 sm:rounded-t-[50px] sm:px-8 md:-mt-14 md:rounded-t-[60px] md:px-10">
+      <section id="projects" className="-mt-10 z-10 rounded-t-[40px] bg-[#0C0C0C] px-5 pb-16 pt-20 sm:-mt-12 sm:rounded-t-[50px] sm:px-8 md:-mt-14 md:rounded-t-[60px] md:px-10">
         <h2 className="hero-heading mb-10 text-center text-[clamp(3rem,12vw,160px)] font-black uppercase leading-none tracking-tight sm:mb-14 md:mb-16">Project</h2>
         <p className="mb-12 text-center text-sm uppercase tracking-[0.3em] text-[#D7E2EA]/70 sm:text-base">Under Development</p>
         <div className="space-y-10">
@@ -383,7 +388,7 @@ export default function App() {
             <ProjectCard key={project.number} index={index} totalCards={projects.length} project={project} />
           ))}
         </div>
-        <div className="mt-16 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <div id="contact" className="mt-16 flex scroll-mt-24 flex-wrap items-center justify-center gap-3 sm:gap-4">
           <a href="mailto:abhishekgauswami19@gmail.com" className="rounded-full border border-[#D7E2EA]/40 px-5 py-2 text-xs uppercase tracking-widest text-[#D7E2EA] transition hover:bg-[#D7E2EA]/10 sm:text-sm">
             Email
           </a>
