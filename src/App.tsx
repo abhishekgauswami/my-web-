@@ -297,7 +297,7 @@ export default function App() {
         </FadeIn>
 
         <div className="overflow-hidden">
-          <FadeIn as="h1" delay={0.15} y={40} className="hero-heading mt-6 w-full whitespace-nowrap text-center text-[11vw] font-black uppercase leading-none tracking-tight sm:mt-4 sm:text-[12vw] md:-mt-3 md:text-[13vw] lg:text-[14vw]">
+          <FadeIn as="h1" delay={0.15} y={40} className="hero-heading mx-auto mt-6 w-full max-w-[96vw] text-center text-[clamp(2.6rem,10.5vw,9.5rem)] font-black uppercase leading-[0.92] tracking-tight sm:mt-4 md:-mt-3">
             Hi, i&apos;m abhishek
           </FadeIn>
         </div>
